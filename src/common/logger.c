@@ -1,4 +1,5 @@
 #include "common/logger.h"
+#include <stdlib.h>
 
 static FILE* log_file = NULL;
 static LogLevel minimum_level = LOG_INFO;

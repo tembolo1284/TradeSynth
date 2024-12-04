@@ -1,120 +1,271 @@
 #include "common/utils.h"
 #include "common/logger.h"
+#include <errno.h>
+#include <ctype.h>
+#include <math.h>
 
-void process_order(const Order* order) {
-    LOG_PERF_START(process_order);
-    
-    LOG_INFO("Processing order: ID=%ld, Symbol=%s, Type=%d, Side=%d", 
-             order->order_id, order->symbol, order->type, order->side);
-    
-    // Validate order
-    if (validate_order(order) != SUCCESS) {
-        LOG_ERROR("Order validation failed for ID=%ld", order->order_id);
-        return;
-    }
-    
-    // Process based on order type
-    switch (order->type) {
-        case MARKET:
-            LOG_DEBUG("Processing market order for %s", order->symbol);
-            process_market_order(order);
-            break;
-            
-        case LIMIT:
-            LOG_DEBUG("Processing limit order for %s at price %.2f", 
-                     order->symbol, order->price);
-            process_limit_order(order);
-            break;
-            
-        case STOP:
-            LOG_DEBUG("Processing stop order for %s at price %.2f", 
-                     order->symbol, order->price);
-            process_stop_order(order);
-            break;
-            
-        default:
-            LOG_ERROR("Unknown order type %d for order ID=%ld", 
-                     order->type, order->order_id);
-            return;
-    }
-    
-    LOG_PERF_END(process_order);
+// Time utilities
+time_t get_current_timestamp(void) {
+    return time(NULL);
 }
 
-void broadcast_market_data(const MarketData* market_data) {
-    LOG_PERF_START(broadcast_market_data);
-    
-    LOG_INFO("Broadcasting market data for %s: Last=%.2f, Bid=%.2f, Ask=%.2f", 
-             market_data->symbol, market_data->last_price, 
-             market_data->bid, market_data->ask);
-    
-    char buffer[BUFFER_SIZE];
-    Message msg;
-    msg.type = MARKET_DATA;
-    msg.data.market_data = *market_data;
-    
-    size_t msg_size = serialize_message(&msg, buffer, BUFFER_SIZE);
-    if (msg_size <= 0) {
-        LOG_ERROR("Failed to serialize market data for broadcast");
-        return;
-    }
-    
-    LOG_DEBUG("Serialized market data message size: %zu bytes", msg_size);
-    
-    pthread_mutex_lock(&clients_mutex);
-    
-    for (int i = 0; i < client_count; i++) {
-        LOG_DEBUG("Sending market data to client %s", clients[i].id);
-        if (send(clients[i].socket, buffer, msg_size, 0) < 0) {
-            LOG_ERROR("Failed to send market data to client %s: %s", 
-                     clients[i].id, strerror(errno));
-        }
-    }
-    
-    pthread_mutex_unlock(&clients_mutex);
-    
-    LOG_DEBUG("Market data broadcast complete to %d clients", client_count);
-    LOG_PERF_END(broadcast_market_data);
+char* format_timestamp(time_t timestamp, char* buffer, size_t buffer_size) {
+    struct tm* tm_info = localtime(&timestamp);
+    strftime(buffer, buffer_size, "%Y-%m-%d %H:%M:%S", tm_info);
+    return buffer;
 }
 
-void process_trade_execution(const TradeExecution* trade) {
-    LOG_PERF_START(process_trade);
-    
-    LOG_INFO("Processing trade execution: Trade ID=%ld, Order ID=%ld, Symbol=%s, Price=%.2f, Quantity=%d", 
-             trade->trade_id, trade->order_id, trade->symbol, 
-             trade->price, trade->quantity);
-    
-    // Update order book
-    if (update_order_book(trade) != SUCCESS) {
-        LOG_ERROR("Failed to update order book for trade ID=%ld", trade->trade_id);
-        return;
-    }
-    
-    // Generate market data update
-    MarketData market_data;
-    if (generate_market_data_update(trade, &market_data) == SUCCESS) {
-        LOG_DEBUG("Broadcasting market data update after trade");
-        broadcast_market_data(&market_data);
-    } else {
-        LOG_ERROR("Failed to generate market data update for trade ID=%ld", 
-                 trade->trade_id);
-    }
-    
-    // Notify clients involved in the trade
-    notify_trade_parties(trade);
-    
-    LOG_PERF_END(process_trade);
+int64_t get_time_diff_ms(struct timespec* start, struct timespec* end) {
+    return (end->tv_sec - start->tv_sec) * 1000 + 
+           (end->tv_nsec - start->tv_nsec) / 1000000;
 }
 
-int validate_order(const Order* order) {
-    LOG_DEBUG("Validating order ID=%ld", order->order_id);
+// String utilities
+char* trim_whitespace(char* str) {
+    if (!str) return NULL;
     
-    if (strlen(order->symbol) == 0 || strlen(order->symbol) > MAX_SYMBOL_LENGTH) {
-        LOG_ERROR("Invalid symbol length for order ID=%ld", order->order_id);
-        return ERROR_INVALID_SYMBOL;
+    // Trim leading space
+    while(isspace((unsigned char)*str)) str++;
+    
+    if(*str == 0) return str;
+    
+    // Trim trailing space
+    char* end = str + strlen(str) - 1;
+    while(end > str && isspace((unsigned char)*end)) end--;
+    end[1] = '\0';
+    
+    return str;
+}
+
+int string_to_upper(char* str) {
+    if (!str) return ERROR_INVALID_PARAM;
+    
+    for(int i = 0; str[i]; i++) {
+        str[i] = toupper((unsigned char)str[i]);
+    }
+    return SUCCESS;
+}
+
+int string_to_lower(char* str) {
+    if (!str) return ERROR_INVALID_PARAM;
+    
+    for(int i = 0; str[i]; i++) {
+        str[i] = tolower((unsigned char)str[i]);
+    }
+    return SUCCESS;
+}
+
+char* safe_strncpy(char* dest, const char* src, size_t size) {
+    if (!dest || !src || size == 0) return NULL;
+    
+    strncpy(dest, src, size - 1);
+    dest[size - 1] = '\0';
+    return dest;
+}
+
+// Number utilities
+int64_t safe_atoi64(const char* str) {
+    if (!str) return 0;
+    char* endptr;
+    errno = 0;
+    int64_t val = strtoll(str, &endptr, 10);
+    return (errno == 0 && *endptr == '\0') ? val : 0;
+}
+
+double safe_atod(const char* str) {
+    if (!str) return 0.0;
+    char* endptr;
+    errno = 0;
+    double val = strtod(str, &endptr);
+    return (errno == 0 && *endptr == '\0') ? val : 0.0;
+}
+
+int is_valid_price(double price) {
+    return price > 0.0 && price < 1000000.0 && !isnan(price) && !isinf(price);
+}
+
+int is_valid_quantity(int quantity) {
+    return quantity > 0 && quantity <= 1000000;
+}
+
+// Memory utilities
+void* safe_malloc(size_t size) {
+    void* ptr = malloc(size);
+    if (!ptr) {
+        LOG_ERROR("Memory allocation failed for size %zu", size);
+        return NULL;
+    }
+    return ptr;
+}
+
+void* safe_calloc(size_t nmemb, size_t size) {
+    void* ptr = calloc(nmemb, size);
+    if (!ptr) {
+        LOG_ERROR("Memory allocation failed for %zu elements of size %zu", nmemb, size);
+        return NULL;
+    }
+    return ptr;
+}
+
+void safe_free(void** ptr) {
+    if (ptr && *ptr) {
+        free(*ptr);
+        *ptr = NULL;
+    }
+}
+
+// Order validation functions
+int validate_order_fields(const Order* order) {
+    if (!order) return ERROR_INVALID_PARAM;
+    
+    if (strlen(order->symbol) == 0 || strlen(order->symbol) >= MAX_SYMBOL_LENGTH) {
+        LOG_ERROR("Invalid symbol length for order ID=%lu", order->order_id);
+        return ERROR_INVALID_ORDER;
     }
     
     if (order->quantity <= 0) {
-        LOG_ERROR("Invalid quantity %d for order ID=%ld", 
-                 order->quantity, order->order_id);
-        return ERROR_INVALID_
+        LOG_ERROR("Invalid quantity %u for order ID=%lu", order->quantity, order->order_id);
+        return ERROR_INVALID_ORDER;
+    }
+    
+    if (!is_valid_order_type(order->type)) {
+        LOG_ERROR("Invalid order type %d for order ID=%lu", order->type, order->order_id);
+        return ERROR_INVALID_ORDER;
+    }
+    
+    if (!is_valid_order_side(order->side)) {
+        LOG_ERROR("Invalid order side %d for order ID=%lu", order->side, order->order_id);
+        return ERROR_INVALID_ORDER;
+    }
+    
+    return SUCCESS;
+}
+
+int is_valid_order_type(OrderType type) {
+    return type >= ORDER_TYPE_MARKET && type <= ORDER_TYPE_STOP_LIMIT;
+}
+
+int is_valid_order_side(OrderSide side) {
+    return side == ORDER_SIDE_BUY || side == ORDER_SIDE_SELL;
+}
+
+int is_valid_time_in_force(TimeInForce tif) {
+    return tif >= TIF_DAY && tif <= TIF_GTC;
+}
+
+char* order_type_to_string(OrderType type) {
+    switch(type) {
+        case ORDER_TYPE_MARKET: return "MARKET";
+        case ORDER_TYPE_LIMIT: return "LIMIT";
+        case ORDER_TYPE_STOP: return "STOP";
+        case ORDER_TYPE_STOP_LIMIT: return "STOP_LIMIT";
+        default: return "UNKNOWN";
+    }
+}
+
+char* order_side_to_string(OrderSide side) {
+    switch(side) {
+        case ORDER_SIDE_BUY: return "BUY";
+        case ORDER_SIDE_SELL: return "SELL";
+        default: return "UNKNOWN";
+    }
+}
+
+char* order_status_to_string(OrderStatus status) {
+    switch(status) {
+        case ORDER_STATUS_NEW: return "NEW";
+        case ORDER_STATUS_PARTIAL: return "PARTIAL";
+        case ORDER_STATUS_FILLED: return "FILLED";
+        case ORDER_STATUS_CANCELLED: return "CANCELLED";
+        case ORDER_STATUS_REJECTED: return "REJECTED";
+        default: return "UNKNOWN";
+    }
+}
+
+// Market data validation
+int validate_market_data(const MarketData* data) {
+    if (!data) return ERROR_INVALID_PARAM;
+    
+    if (strlen(data->symbol) == 0 || strlen(data->symbol) >= MAX_SYMBOL_LENGTH) {
+        LOG_ERROR("Invalid symbol in market data");
+        return ERROR_MARKET_DATA;
+    }
+    
+    if (price_to_double(data->bid) >= price_to_double(data->ask)) {
+        LOG_ERROR("Invalid bid/ask spread for %s", data->symbol);
+        return ERROR_MARKET_DATA;
+    }
+    
+    return SUCCESS;
+}
+
+// Random number generation
+uint64_t generate_order_id(void) {
+    static uint64_t next_order_id = 1;
+    return __sync_fetch_and_add(&next_order_id, 1);
+}
+
+uint64_t generate_trade_id(void) {
+    static uint64_t next_trade_id = 1;
+    return __sync_fetch_and_add(&next_trade_id, 1);
+}
+
+double generate_random_price(double min, double max) {
+    return min + (((double)rand() / RAND_MAX) * (max - min));
+}
+
+int generate_random_quantity(int min, int max) {
+    return min + (rand() % (max - min + 1));
+}
+
+// Hash functions
+uint64_t hash_string(const char* str) {
+    uint64_t hash = 5381;
+    int c;
+    
+    while ((c = *str++))
+        hash = ((hash << 5) + hash) + c;
+    
+    return hash;
+}
+
+uint64_t hash_order(const Order* order) {
+    if (!order) return 0;
+    
+    uint64_t hash = hash_string(order->symbol);
+    hash = (hash << 5) + hash + order->order_id;
+    hash = (hash << 5) + hash + (uint64_t)order->type;
+    hash = (hash << 5) + hash + (uint64_t)order->side;
+    hash = (hash << 5) + hash + (uint64_t)order->quantity;
+    
+    return hash;
+}
+
+// Price utilities
+int compare_prices(const Price* p1, const Price* p2) {
+    if (!p1 || !p2) return 0;
+    
+    double price1 = price_to_double(*p1);
+    double price2 = price_to_double(*p2);
+    
+    if (price1 < price2) return -1;
+    if (price1 > price2) return 1;
+    return 0;
+}
+
+void normalize_price(Price* price) {
+    if (!price) return;
+    
+    while (price->mantissa % 10 == 0 && price->exponent < 0) {
+        price->mantissa /= 10;
+        price->exponent++;
+    }
+}
+
+char* price_to_string(const Price* price, char* buffer, size_t buffer_size) {
+    if (!price || !buffer || buffer_size == 0) return NULL;
+    
+    double value = price_to_double(*price);
+    snprintf(buffer, buffer_size, "%.6f", value);
+    return buffer;
+}

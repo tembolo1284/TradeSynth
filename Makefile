@@ -1,6 +1,6 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -I./include -I./include/server -I./include/client -I./include/common -I./include/serialization -pthread
-LDFLAGS = -pthread
+CFLAGS = -Wall -Wextra -I./include -pthread
+LDFLAGS = -pthread -lm
 DEBUG_FLAGS = -g -DDEBUG
 RELEASE_FLAGS = -O2 -DNDEBUG
 
@@ -9,18 +9,25 @@ SRC_DIR = src
 TEST_DIR = tests
 OBJ_DIR = obj
 BIN_DIR = bin
-INCLUDE_DIR = include
+
+# Source directories
+SERVER_SRC = $(SRC_DIR)/server
+CLIENT_SRC = $(SRC_DIR)/client
+COMMON_SRC = $(SRC_DIR)/common
+SERIAL_SRC = $(SRC_DIR)/serialization
 
 # Source files
-SERVER_SRCS = $(wildcard $(SRC_DIR)/server/*.c)
-CLIENT_SRCS = $(wildcard $(SRC_DIR)/client/*.c)
-COMMON_SRCS = $(wildcard $(SRC_DIR)/common/*.c)
+SERVER_SRCS = $(wildcard $(SERVER_SRC)/*.c)
+CLIENT_SRCS = $(wildcard $(CLIENT_SRC)/*.c)
+COMMON_SRCS = $(wildcard $(COMMON_SRC)/*.c)
+SERIAL_SRCS = $(wildcard $(SERIAL_SRC)/*.c)
 TEST_SRCS = $(wildcard $(TEST_DIR)/unit/*.c) $(wildcard $(TEST_DIR)/integration/*.c)
 
 # Object files
 SERVER_OBJS = $(SERVER_SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 CLIENT_OBJS = $(CLIENT_SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 COMMON_OBJS = $(COMMON_SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+SERIAL_OBJS = $(SERIAL_SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 TEST_OBJS = $(TEST_SRCS:$(TEST_DIR)/%.c=$(OBJ_DIR)/test_%.o)
 
 # Executables
@@ -33,7 +40,13 @@ all: dirs release
 
 # Create necessary directories
 dirs:
-	@mkdir -p $(BIN_DIR) $(OBJ_DIR)/server $(OBJ_DIR)/client $(OBJ_DIR)/common $(OBJ_DIR)/test/unit $(OBJ_DIR)/test/integration
+	@mkdir -p $(BIN_DIR) \
+		$(OBJ_DIR)/server \
+		$(OBJ_DIR)/client \
+		$(OBJ_DIR)/common \
+		$(OBJ_DIR)/serialization \
+		$(OBJ_DIR)/test/unit \
+		$(OBJ_DIR)/test/integration
 
 # Debug build
 debug: CFLAGS += $(DEBUG_FLAGS)
@@ -44,15 +57,15 @@ release: CFLAGS += $(RELEASE_FLAGS)
 release: dirs $(SERVER_BIN) $(CLIENT_BIN)
 
 # Build server
-$(SERVER_BIN): $(SERVER_OBJS) $(COMMON_OBJS)
+$(SERVER_BIN): $(SERVER_OBJS) $(COMMON_OBJS) $(SERIAL_OBJS)
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
 # Build client
-$(CLIENT_BIN): $(CLIENT_OBJS) $(COMMON_OBJS)
+$(CLIENT_BIN): $(CLIENT_OBJS) $(COMMON_OBJS) $(SERIAL_OBJS)
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
 # Build tests
-$(TEST_BIN): $(TEST_OBJS) $(COMMON_OBJS)
+$(TEST_BIN): $(TEST_OBJS) $(COMMON_OBJS) $(SERIAL_OBJS)
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS) -lcunit
 
 # Compile source files
@@ -73,9 +86,21 @@ test: debug $(TEST_BIN)
 clean:
 	rm -rf $(OBJ_DIR) $(BIN_DIR)
 
-# Install dependencies (Ubuntu/Debian)
+# Install dependencies
 deps:
 	sudo apt-get update
 	sudo apt-get install -y build-essential libcunit1-dev
 
-.PHONY: all dirs debug release test clean deps
+# Help target
+help:
+	@echo "Available targets:"
+	@echo "  all          - Default target, same as 'release'"
+	@echo "  debug        - Build debug version with symbols"
+	@echo "  release      - Build optimized release version"
+	@echo "  test         - Build and run tests"
+	@echo "  clean        - Remove build artifacts"
+	@echo "  deps         - Install system dependencies"
+	@echo "  dirs         - Create necessary build directories"
+	@echo "  help         - Show this help message"
+
+.PHONY: all dirs debug release test clean deps help

@@ -1,124 +1,156 @@
 #include "serialization/serialization.h"
-#include "common/logger.h"
 
-int serialize_message(const Message* msg, char* buffer, size_t buffer_size) {
-    LOG_PERF_START(serialize);
+int serialize_message(const Message* msg, uint8_t* buffer, size_t buffer_size) {
+    if (!msg || !buffer || buffer_size < sizeof(MessageHeader)) {
+        return SERIAL_ERROR_BUFFER_OVERFLOW;
+    }
+
     size_t pos = 0;
-    
-    LOG_DEBUG("Serializing message type %d", msg->type);
-    
-    // Write message type
-    if (pos + sizeof(MessageType) > buffer_size) {
-        LOG_ERROR("Buffer overflow while serializing message type");
-        return -1;
-    }
-    memcpy(buffer + pos, &msg->type, sizeof(MessageType));
-    pos += sizeof(MessageType);
-    
-    // Write message data based on type
+    MessageHeader header = {
+        .version = SERIALIZATION_VERSION,
+        .message_size = 0,
+        .type = msg->type,
+        .payload_size = 0,
+        .checksum = 0
+    };
+
     switch (msg->type) {
-        case ORDER_NEW:
-        case ORDER_MODIFY:
-        case ORDER_CANCEL:
-            LOG_DEBUG("Serializing order: ID=%ld, Symbol=%s", 
-                     msg->data.order.order_id, msg->data.order.symbol);
-            if (pos + sizeof(Order) > buffer_size) {
-                LOG_ERROR("Buffer overflow while serializing order");
-                return -1;
+        case MSG_ORDER_NEW:
+        case MSG_ORDER_MODIFY:
+        case MSG_ORDER_CANCEL:
+            header.payload_size = sizeof(Order);
+            if (pos + sizeof(MessageHeader) + header.payload_size > buffer_size) {
+                return SERIAL_ERROR_BUFFER_OVERFLOW;
             }
-            memcpy(buffer + pos, &msg->data.order, sizeof(Order));
-            pos += sizeof(Order);
+            memcpy(buffer + pos + sizeof(MessageHeader), &msg->data.order, sizeof(Order));
             break;
-            
-        case MARKET_DATA:
-            LOG_DEBUG("Serializing market data for symbol %s", 
-                     msg->data.market_data.symbol);
-            if (pos + sizeof(MarketData) > buffer_size) {
-                LOG_ERROR("Buffer overflow while serializing market data");
-                return -1;
+
+        case MSG_MARKET_DATA:
+            header.payload_size = sizeof(MarketData);
+            if (pos + sizeof(MessageHeader) + header.payload_size > buffer_size) {
+                return SERIAL_ERROR_BUFFER_OVERFLOW;
             }
-            memcpy(buffer + pos, &msg->data.market_data, sizeof(MarketData));
-            pos += sizeof(MarketData);
+            memcpy(buffer + pos + sizeof(MessageHeader), &msg->data.market_data, sizeof(MarketData));
             break;
-            
-        case TRADE_EXECUTION:
-            LOG_DEBUG("Serializing trade execution: ID=%ld", 
-                     msg->data.trade.trade_id);
-            if (pos + sizeof(TradeExecution) > buffer_size) {
-                LOG_ERROR("Buffer overflow while serializing trade execution");
-                return -1;
+
+        case MSG_TRADE_EXEC:
+            header.payload_size = sizeof(TradeExecution);
+            if (pos + sizeof(MessageHeader) + header.payload_size > buffer_size) {
+                return SERIAL_ERROR_BUFFER_OVERFLOW;
             }
-            memcpy(buffer + pos, &msg->data.trade, sizeof(TradeExecution));
-            pos += sizeof(TradeExecution);
+            memcpy(buffer + pos + sizeof(MessageHeader), &msg->data.trade, sizeof(TradeExecution));
             break;
-            
+
         default:
-            LOG_ERROR("Unknown message type: %d", msg->type);
-            return -1;
+            return SERIAL_ERROR_INVALID_TYPE;
     }
-    
-    LOG_DEBUG("Serialization complete, total size: %zu bytes", pos);
-    LOG_PERF_END(serialize);
-    return pos;
+
+    header.message_size = sizeof(MessageHeader) + header.payload_size;
+    header.checksum = calculate_checksum(buffer + sizeof(MessageHeader), header.payload_size);
+
+    memcpy(buffer, &header, sizeof(MessageHeader));
+
+    return header.message_size;
 }
 
-int deserialize_message(const char* buffer, size_t buffer_size, Message* msg) {
-    LOG_PERF_START(deserialize);
-    size_t pos = 0;
-    
-    // Read message type
-    if (pos + sizeof(MessageType) > buffer_size) {
-        LOG_ERROR("Buffer underflow while reading message type");
-        return -1;
+int deserialize_message(const uint8_t* buffer, size_t buffer_size, Message* msg) {
+    if (!buffer || !msg || buffer_size < sizeof(MessageHeader)) {
+        return SERIAL_ERROR_INCOMPLETE;
     }
-    memcpy(&msg->type, buffer + pos, sizeof(MessageType));
-    pos += sizeof(MessageType);
-    
-    LOG_DEBUG("Deserializing message type %d", msg->type);
-    
-    // Read message data based on type
+
+    MessageHeader header;
+    memcpy(&header, buffer, sizeof(MessageHeader));
+
+    if (validate_message_header(&header) != SERIAL_SUCCESS) {
+        return SERIAL_ERROR_INVALID_MESSAGE;
+    }
+
+    if (buffer_size < header.message_size) {
+        return SERIAL_ERROR_INCOMPLETE;
+    }
+
+    uint32_t calc_checksum = calculate_checksum(buffer + sizeof(MessageHeader), header.payload_size);
+    if (calc_checksum != header.checksum) {
+        return SERIAL_ERROR_CHECKSUM;
+    }
+
+    msg->type = header.type;
+    const uint8_t* payload = buffer + sizeof(MessageHeader);
+
     switch (msg->type) {
-        case ORDER_NEW:
-        case ORDER_MODIFY:
-        case ORDER_CANCEL:
-            if (pos + sizeof(Order) > buffer_size) {
-                LOG_ERROR("Buffer underflow while reading order data");
-                return -1;
+        case MSG_ORDER_NEW:
+        case MSG_ORDER_MODIFY:
+        case MSG_ORDER_CANCEL:
+            if (header.payload_size != sizeof(Order)) {
+                return SERIAL_ERROR_INVALID_MESSAGE;
             }
-            memcpy(&msg->data.order, buffer + pos, sizeof(Order));
-            LOG_DEBUG("Deserialized order: ID=%ld, Symbol=%s", 
-                     msg->data.order.order_id, msg->data.order.symbol);
-            pos += sizeof(Order);
+            memcpy(&msg->data.order, payload, sizeof(Order));
             break;
-            
-        case MARKET_DATA:
-            if (pos + sizeof(MarketData) > buffer_size) {
-                LOG_ERROR("Buffer underflow while reading market data");
-                return -1;
+
+        case MSG_MARKET_DATA:
+            if (header.payload_size != sizeof(MarketData)) {
+                return SERIAL_ERROR_INVALID_MESSAGE;
             }
-            memcpy(&msg->data.market_data, buffer + pos, sizeof(MarketData));
-            LOG_DEBUG("Deserialized market data for symbol %s", 
-                     msg->data.market_data.symbol);
-            pos += sizeof(MarketData);
+            memcpy(&msg->data.market_data, payload, sizeof(MarketData));
             break;
-            
-        case TRADE_EXECUTION:
-            if (pos + sizeof(TradeExecution) > buffer_size) {
-                LOG_ERROR("Buffer underflow while reading trade execution");
-                return -1;
+
+        case MSG_TRADE_EXEC:
+            if (header.payload_size != sizeof(TradeExecution)) {
+                return SERIAL_ERROR_INVALID_MESSAGE;
             }
-            memcpy(&msg->data.trade, buffer + pos, sizeof(TradeExecution));
-            LOG_DEBUG("Deserialized trade execution: ID=%ld", 
-                     msg->data.trade.trade_id);
-            pos += sizeof(TradeExecution);
+            memcpy(&msg->data.trade, payload, sizeof(TradeExecution));
             break;
-            
+
         default:
-            LOG_ERROR("Unknown message type during deserialization: %d", msg->type);
-            return -1;
+            return SERIAL_ERROR_INVALID_TYPE;
+    }
+
+    return SERIAL_SUCCESS;
+}
+
+uint32_t calculate_checksum(const uint8_t* data, size_t size) {
+    uint32_t checksum = 0;
+    for (size_t i = 0; i < size; i++) {
+        checksum = ((checksum << 5) + checksum) + data[i];
+    }
+    return checksum;
+}
+
+int validate_message_header(const MessageHeader* header) {
+    if (!header) return SERIAL_ERROR_INVALID_MESSAGE;
+    
+    if (header->version != SERIALIZATION_VERSION) {
+        return SERIAL_ERROR_INVALID_VERSION;
     }
     
-    LOG_DEBUG("Deserialization complete, processed %zu bytes", pos);
-    LOG_PERF_END(deserialize);
-    return SUCCESS;
+    if (header->message_size < sizeof(MessageHeader)) {
+        return SERIAL_ERROR_INVALID_MESSAGE;
+    }
+    
+    if (header->message_size > MAX_MESSAGE_SIZE) {
+        return SERIAL_ERROR_BUFFER_OVERFLOW;
+    }
+    
+    return SERIAL_SUCCESS;
+}
+
+const char* get_serialization_error(SerializationError error) {
+    switch (error) {
+        case SERIAL_SUCCESS:
+            return "Success";
+        case SERIAL_ERROR_BUFFER_OVERFLOW:
+            return "Buffer overflow";
+        case SERIAL_ERROR_INVALID_VERSION:
+            return "Invalid version";
+        case SERIAL_ERROR_INVALID_TYPE:
+            return "Invalid message type";
+        case SERIAL_ERROR_CHECKSUM:
+            return "Checksum mismatch";
+        case SERIAL_ERROR_INCOMPLETE:
+            return "Incomplete message";
+        case SERIAL_ERROR_INVALID_MESSAGE:
+            return "Invalid message format";
+        default:
+            return "Unknown error";
+    }
 }
