@@ -1,116 +1,230 @@
 #include "client/client.h"
-#include "common/logger.h"
 
-int initialize_client(const char* server_ip, int port) {
-    LOG_PERF_START(client_init);
-    int client_socket;
+// Receiver thread for incoming messages
+void* message_receiver_thread(void* arg) {
+    ClientContext* context = (ClientContext*)arg;
+    uint8_t buffer[BUFFER_SIZE];
+    Message msg;
+
+    while (context->running) {
+        ssize_t bytes_received = recv(context->socket, buffer, BUFFER_SIZE, 0);
+        if (bytes_received <= 0) {
+            if (bytes_received == 0) {
+                LOG_INFO("Server disconnected");
+            } else {
+                LOG_ERROR("Error receiving from server: %s", strerror(errno));
+            }
+            break;
+        }
+
+        if (deserialize_message(buffer, bytes_received, &msg) != SUCCESS) {
+            LOG_ERROR("Failed to deserialize message");
+            continue;
+        }
+
+        context->stats.messages_received++;
+
+        // Process received message based on type
+        switch (msg.type) {
+            case MSG_ORDER_STATUS:
+                if (context->callbacks.on_order_status) {
+                    context->callbacks.on_order_status(&msg.data.order, context->user_data);
+                }
+                break;
+
+            case MSG_MARKET_DATA:
+                if (context->callbacks.on_market_data) {
+                    context->callbacks.on_market_data(&msg.data.market_data, context->user_data);
+                }
+                break;
+
+            case MSG_TRADE_EXEC:
+                if (context->callbacks.on_trade) {
+                    context->callbacks.on_trade(&msg.data.trade, context->user_data);
+                }
+                context->stats.trades_received++;
+                break;
+
+            default:
+                LOG_WARN("Received unknown message type: %d", msg.type);
+        }
+    }
+
+    context->state = CLIENT_DISCONNECTED;
+    if (context->callbacks.on_disconnect) {
+        context->callbacks.on_disconnect(context->user_data);
+    }
+
+    return NULL;
+}
+
+// Initialize client context
+ClientContext* initialize_client(const ClientConfig* config, const ClientCallbacks* callbacks, void* user_data) {
+    if (!config) {
+        LOG_ERROR("Invalid client configuration");
+        return NULL;
+    }
+
+    ClientContext* context = (ClientContext*)calloc(1, sizeof(ClientContext));
+    if (!context) {
+        LOG_ERROR("Failed to allocate client context");
+        return NULL;
+    }
+
+    context->config = *config;
+    if (callbacks) {
+        context->callbacks = *callbacks;
+    }
+    context->user_data = user_data;
+    context->state = CLIENT_DISCONNECTED;
+    context->running = 1;
+
+    pthread_mutex_init(&context->state_mutex, NULL);
+    pthread_mutex_init(&context->stats_mutex, NULL);
+
+    LOG_INFO("Client context initialized successfully");
+    return context;
+}
+
+// Connect to server
+int connect_to_server(ClientContext* context) {
+    if (!context) return ERROR_INVALID_PARAM;
+
     struct sockaddr_in server_addr;
-    
-    LOG_INFO("Initializing client connection to %s:%d", server_ip, port);
-    
+    memset(&server_addr, 0, sizeof(server_addr));
+    server_addr.sin_family = AF_INET;
+    server_addr.sin_port = htons(context->config.server_port);
+
+    // Handle hostname resolution
+    if (strcmp(context->config.server_host, "localhost") == 0) {
+        if (inet_pton(AF_INET, "127.0.0.1", &server_addr.sin_addr) <= 0) {
+            LOG_ERROR("Failed to resolve localhost");
+            return ERROR_SOCKET_CONNECT;
+        }
+    } else {
+        if (inet_pton(AF_INET, context->config.server_host, &server_addr.sin_addr) <= 0) {
+            LOG_ERROR("Invalid server address: %s", context->config.server_host);
+            return ERROR_SOCKET_CONNECT;
+        }
+    }
+
     // Create socket
-    LOG_DEBUG("Creating client socket");
-    client_socket = socket(AF_INET, SOCK_STREAM, 0);
-    if (client_socket == -1) {
+    context->socket = socket(AF_INET, SOCK_STREAM, 0);
+    if (context->socket < 0) {
         LOG_ERROR("Failed to create socket: %s", strerror(errno));
         return ERROR_SOCKET_CREATE;
     }
-    
-    // Initialize server address structure
-    LOG_DEBUG("Configuring server address");
-    memset(&server_addr, 0, sizeof(server_addr));
-    server_addr.sin_family = AF_INET;
-    server_addr.sin_port = htons(port);
-    
-    // Convert IP address
-    if (inet_pton(AF_INET, server_ip, &server_addr.sin_addr) <= 0) {
-        LOG_ERROR("Invalid server IP address %s: %s", server_ip, strerror(errno));
-        close(client_socket);
-        return ERROR_SOCKET_CREATE;
-    }
-    
-    LOG_INFO("Attempting connection to server");
-    if (connect(client_socket, (struct sockaddr*)&server_addr, sizeof(server_addr)) < 0) {
-        LOG_ERROR("Connection failed: %s", strerror(errno));
-        close(client_socket);
-        return ERROR_SOCKET_CREATE;
-    }
-    
-    LOG_PERF_END(client_init);
-    LOG_INFO("Successfully connected to server");
-    return client_socket;
-}
 
-int send_order(int client_socket, const Order* order) {
-    LOG_PERF_START(send_order);
-    Message msg;
-    char buffer[BUFFER_SIZE];
-    
-    LOG_INFO("Preparing to send order: ID=%ld, Symbol=%s, Type=%d, Side=%d", 
-             order->order_id, order->symbol, order->type, order->side);
-    
-    // Prepare message
-    msg.type = ORDER_NEW;
-    msg.data.order = *order;
-    
-    // Serialize message
-    LOG_DEBUG("Serializing order message");
-    size_t msg_size = serialize_message(&msg, buffer, BUFFER_SIZE);
-    if (msg_size <= 0) {
-        LOG_ERROR("Failed to serialize order message");
-        return -1;
+    // Connect to server
+    if (connect(context->socket, (struct sockaddr*)&server_addr, sizeof(server_addr)) < 0) {
+        LOG_ERROR("Failed to connect to server: %s", strerror(errno));
+        close(context->socket);
+        return ERROR_SOCKET_CONNECT;
     }
-    
-    // Send message
-    LOG_DEBUG("Sending %zu bytes", msg_size);
-    int result = send(client_socket, buffer, msg_size, 0);
-    if (result < 0) {
-        LOG_ERROR("Failed to send order: %s", strerror(errno));
-    } else {
-        LOG_INFO("Order sent successfully (%d bytes)", result);
-    }
-    
-    LOG_PERF_END(send_order);
-    return result;
-}
 
-int receive_market_data(int client_socket, MarketData* market_data) {
-    LOG_PERF_START(receive_market_data);
-    char buffer[BUFFER_SIZE];
-    Message msg;
-    
-    // Receive message
-    LOG_DEBUG("Waiting for market data");
-    ssize_t bytes_received = recv(client_socket, buffer, BUFFER_SIZE, 0);
-    if (bytes_received <= 0) {
-        if (bytes_received == 0) {
-            LOG_WARN("Server closed connection");
-        } else {
-            LOG_ERROR("Failed to receive market data: %s", strerror(errno));
-        }
-        return -1;
+    context->state = CLIENT_CONNECTED;
+    context->stats.connect_time = time(NULL);
+
+    // Start receiver thread
+    if (pthread_create(&context->receiver_thread, NULL, message_receiver_thread, context) != 0) {
+        LOG_ERROR("Failed to create receiver thread: %s", strerror(errno));
+        close(context->socket);
+        return ERROR_THREAD_CREATE;
     }
-    
-    LOG_DEBUG("Received %zd bytes of market data", bytes_received);
-    
-    // Deserialize message
-    if (deserialize_message(buffer, bytes_received, &msg) != SUCCESS) {
-        LOG_ERROR("Failed to deserialize market data message");
-        return -1;
+
+    if (context->callbacks.on_connect) {
+        context->callbacks.on_connect(context->user_data);
     }
-    
-    // Check message type
-    if (msg.type != MARKET_DATA) {
-        LOG_ERROR("Received unexpected message type: %d", msg.type);
-        return -1;
-    }
-    
-    // Copy market data
-    *market_data = msg.data.market_data;
-    LOG_INFO("Received market data for %s: Last=%.2f, Bid=%.2f, Ask=%.2f", 
-             market_data->symbol, market_data->last_price, 
-             market_data->bid, market_data->ask);
-    
-    LOG_PERF_END(receive_market_data);
+
+    LOG_INFO("Connected to server %s:%d", context->config.server_host, context->config.server_port);
     return SUCCESS;
 }
+
+// Send an order to the server
+int send_order(ClientContext* context, const Order* order) {
+    if (!context || !order) return ERROR_INVALID_PARAM;
+    if (context->state != CLIENT_CONNECTED) return ERROR_INVALID_STATE;
+
+    Message msg = {
+        .type = MSG_ORDER_NEW,
+        .data.order = *order,
+        .timestamp = time(NULL)
+    };
+
+    uint8_t buffer[BUFFER_SIZE];
+    size_t msg_size = serialize_message(&msg, buffer, BUFFER_SIZE);
+    if (msg_size <= 0) {
+        LOG_ERROR("Failed to serialize order");
+        return ERROR_SERIALIZATION;
+    }
+
+    if (send(context->socket, buffer, msg_size, 0) < 0) {
+        LOG_ERROR("Failed to send order: %s", strerror(errno));
+        return ERROR_SOCKET_CONNECT;
+    }
+
+    context->stats.orders_sent++;
+    context->stats.messages_sent++;
+
+    LOG_INFO("Sent order: ID=%lu, Symbol=%s", order->order_id, order->symbol);
+    return SUCCESS;
+}
+
+// Request market data
+int request_market_data(ClientContext* context, const char* symbol) {
+    if (!context || !symbol) return ERROR_INVALID_PARAM;
+    if (context->state != CLIENT_CONNECTED) return ERROR_INVALID_STATE;
+
+    Message msg = {
+        .type = MSG_MARKET_DATA,
+        .timestamp = time(NULL)
+    };
+    strncpy(msg.data.market_data.symbol, symbol, MAX_SYMBOL_LENGTH - 1);
+
+    uint8_t buffer[BUFFER_SIZE];
+    size_t msg_size = serialize_message(&msg, buffer, BUFFER_SIZE);
+    if (msg_size <= 0) {
+        LOG_ERROR("Failed to serialize market data request");
+        return ERROR_SERIALIZATION;
+    }
+
+    if (send(context->socket, buffer, msg_size, 0) < 0) {
+        LOG_ERROR("Failed to send market data request: %s", strerror(errno));
+        return ERROR_SOCKET_CONNECT;
+    }
+
+    context->stats.messages_sent++;
+    LOG_INFO("Requested market data for symbol: %s", symbol);
+    return SUCCESS;
+}
+
+// Disconnect from server
+void disconnect_from_server(ClientContext* context) {
+    if (!context) return;
+
+    context->running = 0;
+    if (context->socket >= 0) {
+        close(context->socket);
+        context->socket = -1;
+    }
+
+    if (context->receiver_thread) {
+        pthread_join(context->receiver_thread, NULL);
+    }
+
+    context->state = CLIENT_DISCONNECTED;
+    LOG_INFO("Disconnected from server");
+}
+
+// Clean up client resources
+void cleanup_client(ClientContext* context) {
+    if (!context) return;
+
+    disconnect_from_server(context);
+    pthread_mutex_destroy(&context->state_mutex);
+    pthread_mutex_destroy(&context->stats_mutex);
+    free(context);
+
+    LOG_INFO("Client resources cleaned up");
+}
+

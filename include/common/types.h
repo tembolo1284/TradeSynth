@@ -6,6 +6,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <math.h>
+#include <pthread.h>
 
 // Constants
 #define MAX_SYMBOL_LENGTH 16
@@ -158,6 +159,8 @@ typedef struct {
     uint64_t messages_sent;
     uint64_t messages_received;
     struct ServerContext* context;  // Back-reference to server context
+    pthread_t thread;
+    int thread_active;
 } ClientConnection;
 
 // Price manipulation functions

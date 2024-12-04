@@ -1,0 +1,24 @@
+2024-12-04 14:20:41 [INFO ] (src/common/logger.c:56 - init_logger) Logger initialized with minimum level: INFO
+2024-12-04 14:20:41 [INFO ] (src/server/main.c:65 - main) TradeSynth Server Starting...
+2024-12-04 14:20:41 [INFO ] (src/server/server_core.c:61 - initialize_server_context) Server context initialized successfully
+2024-12-04 14:20:41 [INFO ] (src/server/server_core.c:71 - start_server) Starting server on port 8080
+2024-12-04 14:20:41 [ERROR] (src/server/server_network.c:24 - setup_socket) Failed to bind socket: Address already in use
+2024-12-04 14:20:41 [ERROR] (src/server/server_core.c:83 - start_server) Failed to set up server socket
+2024-12-04 14:20:41 [INFO ] (src/server/server_core.c:114 - stop_server) Stopping server
+2024-12-04 14:20:41 [INFO ] (src/server/server_core.c:134 - stop_server) Server stopped
+2024-12-04 14:20:41 [INFO ] (src/server/server_core.c:148 - cleanup_server) Server resources cleaned up
+2024-12-04 14:20:41 [INFO ] (src/common/logger.c:128 - close_logger) Closing logger
+2024-12-04 14:20:49 [INFO ] (src/common/logger.c:56 - init_logger) Logger initialized with minimum level: INFO
+2024-12-04 14:20:49 [INFO ] (src/server/main.c:65 - main) TradeSynth Server Starting...
+2024-12-04 14:20:49 [INFO ] (src/server/server_core.c:61 - initialize_server_context) Server context initialized successfully
+2024-12-04 14:20:49 [INFO ] (src/server/server_core.c:71 - start_server) Starting server on port 8080
+2024-12-04 14:20:49 [INFO ] (src/server/server_network.c:35 - setup_socket) Server socket setup successfully on port 8080
+2024-12-04 14:20:49 [INFO ] (src/server/server_core.c:92 - start_server) Server started successfully
+2024-12-04 18:50:27 [INFO ] (src/server/server_core.c:10 - signal_handler) Received signal 2, initiating shutdown
+2024-12-04 18:50:27 [ERROR] (src/server/server_core.c:102 - start_server) Failed to accept client connection: Interrupted system call
+2024-12-04 18:50:27 [INFO ] (src/server/server_core.c:114 - stop_server) Stopping server
+2024-12-04 18:50:27 [INFO ] (src/server/server_core.c:134 - stop_server) Server stopped
+2024-12-04 18:50:27 [INFO ] (src/server/server_core.c:114 - stop_server) Stopping server
+2024-12-04 18:50:27 [INFO ] (src/server/server_core.c:134 - stop_server) Server stopped
+2024-12-04 18:50:27 [INFO ] (src/server/server_core.c:148 - cleanup_server) Server resources cleaned up
+2024-12-04 18:50:27 [INFO ] (src/common/logger.c:128 - close_logger) Closing logger

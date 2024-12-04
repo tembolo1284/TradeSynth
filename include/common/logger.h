@@ -16,6 +16,11 @@ typedef enum {
     LOG_FATAL
 } LogLevel;
 
+// Errors
+#define SUCCESS 0
+#define ERROR_INVALID_PARAM -1
+#define ERROR_FILE_OPEN -2
+
 // Color codes for different log levels
 #define ANSI_COLOR_RED     "\x1b[31m"
 #define ANSI_COLOR_GREEN   "\x1b[32m"
@@ -26,7 +31,7 @@ typedef enum {
 #define ANSI_COLOR_RESET   "\x1b[0m"
 
 // Function declarations
-void init_logger(const char* log_file_path, LogLevel min_level);
+int init_logger(const char* log_file_path, LogLevel min_level);
 void log_message(LogLevel level, const char* file, int line, const char* func, const char* format, ...);
 void close_logger(void);
 
