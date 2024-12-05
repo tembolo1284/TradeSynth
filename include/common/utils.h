@@ -56,8 +56,6 @@ const char* error_to_string(ErrorCode code);
 void log_error(const char* file, int line, const char* func, ErrorCode code, const char* message);
 
 // Random number generation
-uint64_t generate_order_id(void);
-uint64_t generate_trade_id(void);
 double generate_random_price(double min, double max);
 int generate_random_quantity(int min, int max);
 

@@ -200,16 +200,6 @@ int validate_market_data(const MarketData* data) {
 }
 
 // Random number generation
-uint64_t generate_order_id(void) {
-    static uint64_t next_order_id = 1;
-    return __sync_fetch_and_add(&next_order_id, 1);
-}
-
-uint64_t generate_trade_id(void) {
-    static uint64_t next_trade_id = 1;
-    return __sync_fetch_and_add(&next_trade_id, 1);
-}
-
 double generate_random_price(double min, double max) {
     return min + (((double)rand() / RAND_MAX) * (max - min));
 }

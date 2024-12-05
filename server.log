@@ -22,3 +22,17 @@
 2024-12-04 18:50:27 [INFO ] (src/server/server_core.c:134 - stop_server) Server stopped
 2024-12-04 18:50:27 [INFO ] (src/server/server_core.c:148 - cleanup_server) Server resources cleaned up
 2024-12-04 18:50:27 [INFO ] (src/common/logger.c:128 - close_logger) Closing logger
+2024-12-05 13:24:04 [INFO ] (src/common/logger.c:56 - init_logger) Logger initialized with minimum level: INFO
+2024-12-05 13:24:04 [INFO ] (src/server/main.c:65 - main) TradeSynth Server Starting...
+2024-12-05 13:24:04 [INFO ] (src/server/server_core.c:73 - start_server) Starting server on port 8080
+2024-12-05 13:24:04 [INFO ] (src/server/server_network.c:35 - setup_socket) Server socket setup successfully on port 8080
+2024-12-05 13:24:04 [INFO ] (src/server/server_core.c:94 - start_server) Server started successfully
+2024-12-05 13:24:28 [INFO ] (src/server/server_network.c:60 - accept_client) Accepted new client connection from 127.0.0.1:51074
+2024-12-05 13:29:24 [INFO ] (src/server/server_core.c:10 - signal_handler) Received signal 2, initiating shutdown
+2024-12-05 13:29:24 [ERROR] (src/server/server_core.c:104 - start_server) Failed to accept client connection: Interrupted system call
+2024-12-05 13:29:24 [INFO ] (src/server/server_core.c:116 - stop_server) Stopping server
+2024-12-05 13:29:24 [INFO ] (src/server/server_core.c:136 - stop_server) Server stopped
+2024-12-05 13:29:24 [INFO ] (src/server/server_core.c:116 - stop_server) Stopping server
+2024-12-05 13:29:24 [INFO ] (src/server/server_core.c:136 - stop_server) Server stopped
+2024-12-05 13:29:24 [INFO ] (src/server/server_core.c:150 - cleanup_server) Server resources cleaned up
+2024-12-05 13:29:24 [INFO ] (src/common/logger.c:128 - close_logger) Closing logger

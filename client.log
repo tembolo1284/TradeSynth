@@ -1,0 +1,7 @@
+2024-12-05 13:24:28 [INFO ] (src/common/logger.c:56 - init_logger) Logger initialized with minimum level: INFO
+2024-12-05 13:24:28 [INFO ] (src/client/main.c:100 - main) TradeSynth Client Starting...
+2024-12-05 13:24:28 [INFO ] (src/client/client.c:85 - initialize_client) Client context initialized successfully
+2024-12-05 13:24:28 [INFO ] (src/client/main.c:18 - on_connect) Connected to server
+2024-12-05 13:24:28 [INFO ] (src/client/client.c:139 - connect_to_server) Connected to server localhost:8080
+2024-12-05 13:24:35 [INFO ] (src/client/client.c:197 - request_market_data) Requested market data for symbol: GOOG
+2024-12-05 13:24:40 [INFO ] (src/client/main.c:135 - main) User requested to exit

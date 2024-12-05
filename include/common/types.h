@@ -149,20 +149,6 @@ typedef struct {
 // Forward declaration
 struct ServerContext;
 
-// Client connection structure
-typedef struct {
-    int socket;
-    struct sockaddr_in address;
-    char id[MAX_CLIENT_ID_LENGTH];
-    time_t connect_time;
-    time_t last_heartbeat;
-    uint64_t messages_sent;
-    uint64_t messages_received;
-    struct ServerContext* context;  // Back-reference to server context
-    pthread_t thread;
-    int thread_active;
-} ClientConnection;
-
 // Price manipulation functions
 static inline Price create_price(int64_t mantissa, int32_t exponent) {
     Price p = {mantissa, exponent};

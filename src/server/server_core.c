@@ -33,32 +33,34 @@ int validate_server_config(const ServerConfig* config) {
 }
 
 ServerContext* initialize_server_context(const ServerConfig* config) {
-    if (!validate_server_config(config)) {
-        LOG_ERROR("Invalid server configuration");
-        return NULL;
-    }
-
-    ServerContext* context = (ServerContext*)calloc(1, sizeof(ServerContext));
+    ServerContext* context = calloc(1, sizeof(ServerContext));
     if (!context) {
         LOG_ERROR("Failed to allocate server context");
         return NULL;
     }
-
+    
+    context->state = SERVER_STATE_INIT;
+    atomic_init(&context->sequence_num, 1);
     context->config = *config;
-    context->state = SERVER_STOPPED;
-    context->stats.start_time = time(NULL);
-
-    pthread_mutex_init(&context->stats_mutex, NULL);
-    pthread_mutex_init(&context->clients_mutex, NULL);
-
-    context->clients = (ClientConnection*)calloc(config->max_clients, sizeof(ClientConnection));
+    
+    context->clients = calloc(config->max_clients, sizeof(ClientConnection));
     if (!context->clients) {
-        LOG_ERROR("Failed to allocate client connection array");
+        LOG_ERROR("Failed to allocate client array");
         free(context);
         return NULL;
     }
-
-    LOG_INFO("Server context initialized successfully");
+    
+    if (pthread_mutex_init(&context->stats_mutex, NULL) != 0 ||
+        pthread_mutex_init(&context->clients_mutex, NULL) != 0 ||
+        pthread_rwlock_init(&context->market_data_lock, NULL) != 0 ||
+        pthread_rwlock_init(&context->order_book_lock, NULL) != 0 ||
+        pthread_rwlock_init(&context->position_lock, NULL) != 0) {
+        LOG_ERROR("Failed to initialize locks");
+        free(context->clients);
+        free(context);
+        return NULL;
+    }
+    
     return context;
 }
 
@@ -121,9 +123,9 @@ void stop_server(ServerContext* context) {
 
     pthread_mutex_lock(&context->clients_mutex);
     for (int i = 0; i < context->client_count; i++) {
-        if (context->clients[i].thread_active) {
+        if (context->clients[i].active) {
             pthread_join(context->clients[i].thread, NULL);
-            context->clients[i].thread_active = 0;
+            context->clients[i].active = 0;
         }
         close(context->clients[i].socket);
     }
