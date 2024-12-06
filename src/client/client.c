@@ -1,4 +1,6 @@
 #include "client/client.h"
+#include <fcntl.h>
+#include <stdatomic.h>
 
 void* message_receiver_thread(void* arg) {
     ClientContext* context = (ClientContext*)arg;
@@ -195,4 +197,67 @@ void cleanup_client(ClientContext* context) {
     free(context);
 
     LOG_INFO("Client resources cleaned up");
+}
+
+int request_market_data(ClientContext* context, const char* symbol) {
+    if (!context || !symbol) return ERROR_INVALID_PARAM;
+    if (context->state != CLIENT_CONNECTED) return ERROR_INVALID_STATE;
+
+    Message msg = {
+        .type = MSG_MARKET_DATA,
+        .timestamp = time(NULL)
+    };
+    strncpy(msg.data.market_data.symbol, symbol, MAX_SYMBOL_LENGTH - 1);
+
+    uint8_t buffer[BUFFER_SIZE];
+    size_t msg_size = serialize_message(&msg, buffer, BUFFER_SIZE);
+    if (msg_size <= 0) {
+        LOG_ERROR("Failed to serialize market data request");
+        return ERROR_SERIALIZATION;
+    }
+
+    if (send(context->socket, buffer, msg_size, 0) < 0) {
+        LOG_ERROR("Failed to send market data request: %s", strerror(errno));
+        return ERROR_SOCKET_CONNECT;
+    }
+
+    atomic_fetch_add(&context->stats.messages_sent, 1);
+    LOG_INFO("Requested market data for symbol: %s", symbol);
+    return SUCCESS;
+}
+
+int send_order(ClientContext* context, const Order* order) {
+    if (!context || !order) return ERROR_INVALID_PARAM;
+    if (context->state != CLIENT_CONNECTED) return ERROR_INVALID_STATE;
+
+    Message msg = {
+        .type = MSG_ORDER_NEW,
+        .sequence_num = 1,
+        .timestamp = time(NULL),
+        .data.order = *order
+    };
+
+    uint8_t buffer[BUFFER_SIZE];
+    size_t serialized_size = serialize_message(&msg, buffer, BUFFER_SIZE);
+    if (serialized_size <= 0) {
+        return ERROR_SERIALIZATION;
+    }
+
+    if (send(context->socket, buffer, serialized_size, 0) != (ssize_t)serialized_size) {
+        return ERROR_SOCKET_CONNECT;
+    }
+
+    atomic_fetch_add(&context->stats.orders_sent, 1);
+    atomic_fetch_add(&context->stats.messages_sent, 1);
+    return SUCCESS;
+}
+
+ssize_t send_data(ClientContext* context, const void* data, size_t size) {
+    if (!context || !data || size == 0) return ERROR_INVALID_PARAM;
+    return send(context->socket, data, size, 0);
+}
+
+ssize_t receive_data(ClientContext* context, void* buffer, size_t size) {
+    if (!context || !buffer || size == 0) return ERROR_INVALID_PARAM;
+    return recv(context->socket, buffer, size, 0);
 }

@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -I./include -pthread
 LDFLAGS = -pthread -lm
-DEBUG_FLAGS = -g -DDEBUG
+DEBUG_FLAGS = -g -DDEBUG 
 RELEASE_FLAGS = -O2 -DNDEBUG
 
 # Directories
@@ -48,14 +48,14 @@ TEST_BIN = $(BIN_DIR)/run_tests
 all: dirs release
 
 dirs:
-	@mkdir -p $(BIN_DIR) \
-		$(OBJ_DIR)/server \
-		$(OBJ_DIR)/client \
-		$(OBJ_DIR)/common \
-		$(OBJ_DIR)/serialization \
-		$(OBJ_DIR)/test/unit \
-		$(OBJ_DIR)/test/integration \
-		$(foreach dir,$(EXAMPLE_DIRS),$(OBJ_DIR)/examples/$(notdir $(dir)))
+	@mkdir -p $(BIN_DIR)
+	@mkdir -p $(OBJ_DIR)/server
+	@mkdir -p $(OBJ_DIR)/client
+	@mkdir -p $(OBJ_DIR)/common
+	@mkdir -p $(OBJ_DIR)/serialization
+	@mkdir -p $(OBJ_DIR)/test/unit
+	@mkdir -p $(OBJ_DIR)/test/integration
+	@mkdir -p $(foreach dir,$(EXAMPLE_DIRS),$(OBJ_DIR)/examples/$(notdir $(dir)))
 
 debug: CFLAGS += $(DEBUG_FLAGS)
 debug: dirs $(SERVER_BIN) $(CLIENT_BIN) $(TEST_BIN) examples
@@ -74,10 +74,10 @@ $(TEST_BIN): $(TEST_OBJS) $(COMMON_OBJS) $(SERIAL_OBJS)
 
 examples: $(EXAMPLE_BINS)
 
-$(BIN_DIR)/%_server: $(OBJ_DIR)/examples/%/example_server.o $(COMMON_OBJS) $(SERIAL_OBJS)
+$(BIN_DIR)/%_server: $(OBJ_DIR)/examples/%/example_server.o $(SERVER_OBJS:$(OBJ_DIR)/server/main.o=) $(COMMON_OBJS) $(SERIAL_OBJS)
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
-$(BIN_DIR)/%_client: $(OBJ_DIR)/examples/%/example_client.o $(COMMON_OBJS) $(SERIAL_OBJS)
+$(BIN_DIR)/%_client: $(OBJ_DIR)/examples/%/example_client.o $(CLIENT_OBJS:$(OBJ_DIR)/client/main.o=) $(COMMON_OBJS) $(SERIAL_OBJS)
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
@@ -100,16 +100,16 @@ test: debug $(TEST_BIN)
 	./$(TEST_BIN)
 
 run-examples: examples
-	@for example in $(EXAMPLE_SERVER_BINS); do \
+	for example in $(EXAMPLE_SERVER_BINS); do \
 		echo "Starting $$example..."; \
 		$$example & \
 		sleep 1; \
 	done
-	@for example in $(EXAMPLE_CLIENT_BINS); do \
+	for example in $(EXAMPLE_CLIENT_BINS); do \
 		echo "Running $$example..."; \
 		$$example; \
 	done
-	@pkill -f "$(BIN_DIR)/*server"
+	pkill -f "$(BIN_DIR)/*server"
 
 clean:
 	rm -rf $(OBJ_DIR) $(BIN_DIR)

@@ -8,7 +8,28 @@
 #include "../../include/common/types.h"
 #include "../../include/serialization/serialization.h"
 
-// Helper function to send a message and receive response
+void on_connect(void* user_data __attribute__((unused))) {
+    LOG_INFO("Connected to server");
+}
+
+void on_disconnect(void* user_data __attribute__((unused))) {
+    LOG_INFO("Disconnected from server");
+}
+
+void on_market_data(const MarketData* data, void* user_data __attribute__((unused))) {
+    LOG_INFO("Received market data for %s: Bid %.2f, Ask %.2f",
+             data->symbol, price_to_double(data->bid), price_to_double(data->ask));
+}
+
+void on_trade(const TradeExecution* trade, void* user_data __attribute__((unused))) {
+    LOG_INFO("Trade executed: %s %.2f x %d",
+             trade->symbol, price_to_double(trade->price), trade->quantity);
+}
+
+void on_error(ErrorCode error __attribute__((unused)), const char* message, void* user_data __attribute__((unused))) {
+    LOG_ERROR("Error occurred: %s", message);
+}
+
 int send_and_receive(ClientContext* client, Message* msg) {
     uint8_t send_buffer[BUFFER_SIZE];
     uint8_t recv_buffer[BUFFER_SIZE];
@@ -27,7 +48,6 @@ int send_and_receive(ClientContext* client, Message* msg) {
 
     LOG_INFO("Sent message type %d, sequence %lu", msg->type, msg->sequence_num);
 
-    // Wait for response
     ssize_t received = receive_data(client, recv_buffer, BUFFER_SIZE);
     if (received > 0) {
         if (deserialize_message(recv_buffer, received, &response) == SUCCESS) {
@@ -40,9 +60,7 @@ int send_and_receive(ClientContext* client, Message* msg) {
     return ERROR_SOCKET_CONNECT;
 }
 
-// Create and send two order messages
 void send_orders(ClientContext* client) {
-    // First order - Market Buy
     Order buy_order = {
         .order_id = 1001,
         .type = ORDER_TYPE_MARKET,
@@ -67,7 +85,6 @@ void send_orders(ClientContext* client) {
         .data.order = buy_order
     };
 
-    // Second order - Limit Sell
     Order sell_order = {
         .order_id = 1002,
         .type = ORDER_TYPE_LIMIT,
@@ -96,9 +113,7 @@ void send_orders(ClientContext* client) {
     send_and_receive(client, &sell_msg);
 }
 
-// Create and send two market data messages
 void send_market_data(ClientContext* client) {
-    // First market data update
     MarketData data1 = {
         .last_price = double_to_price(150.50),
         .bid = double_to_price(150.45),
@@ -119,7 +134,6 @@ void send_market_data(ClientContext* client) {
         .data.market_data = data1
     };
 
-    // Second market data update
     MarketData data2 = {
         .last_price = double_to_price(280.75),
         .bid = double_to_price(280.70),
@@ -144,9 +158,7 @@ void send_market_data(ClientContext* client) {
     send_and_receive(client, &mkt_msg2);
 }
 
-// Create and send two trade execution messages
 void send_trade_executions(ClientContext* client) {
-    // First trade execution
     TradeExecution trade1 = {
         .trade_id = 5001,
         .order_id = 1001,
@@ -165,7 +177,6 @@ void send_trade_executions(ClientContext* client) {
         .data.trade = trade1
     };
 
-    // Second trade execution
     TradeExecution trade2 = {
         .trade_id = 5002,
         .order_id = 1002,
@@ -188,16 +199,13 @@ void send_trade_executions(ClientContext* client) {
     send_and_receive(client, &trade_msg2);
 }
 
-// Send heartbeat messages
 void send_heartbeats(ClientContext* client) {
-    // First heartbeat
     Message heartbeat1 = {
         .type = MSG_HEARTBEAT,
         .sequence_num = 7,
         .timestamp = time(NULL)
     };
 
-    // Second heartbeat
     Message heartbeat2 = {
         .type = MSG_HEARTBEAT,
         .sequence_num = 8,
@@ -212,28 +220,42 @@ int main(void) {
     init_logger("client.log", LOG_DEBUG);
     LOG_INFO("Starting example client...");
 
-    ClientContext* client = create_client_context();
+    ClientConfig config = {
+        .server_port = 8080,
+        .socket_timeout = DEFAULT_SOCKET_TIMEOUT,
+        .reconnect_attempts = DEFAULT_RECONNECT_ATTEMPTS
+    };
+    strncpy(config.server_host, "localhost", sizeof(config.server_host));
+    strncpy(config.client_id, "EXAMPLE_CLIENT", MAX_CLIENT_ID_LENGTH);
+
+    ClientCallbacks callbacks = {
+        .on_connect = on_connect,
+        .on_disconnect = on_disconnect,
+        .on_market_data = on_market_data,
+        .on_trade = on_trade,
+        .on_error = on_error
+    };
+
+    ClientContext* client = initialize_client(&config, &callbacks, NULL);
     if (!client) {
         LOG_ERROR("Failed to create client context");
         return 1;
     }
 
-    if (connect_to_server(client, "localhost", 8080) != 0) {
+    if (connect_to_server(client) != SUCCESS) {
         LOG_ERROR("Failed to connect to server");
-        destroy_client_context(client);
+        cleanup_client(client);
         return 1;
     }
 
     LOG_INFO("Connected to server, sending messages...");
 
-    // Send two of each message type
     send_orders(client);
     send_market_data(client);
     send_trade_executions(client);
     send_heartbeats(client);
 
-    // Cleanup
-    destroy_client_context(client);
+    cleanup_client(client);
     LOG_INFO("Client shutdown complete");
     return 0;
 }

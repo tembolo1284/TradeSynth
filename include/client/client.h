@@ -25,6 +25,8 @@ void cleanup_client(ClientContext* context);
 // Message sending
 int send_order(ClientContext* context, const Order* order);
 int request_market_data(ClientContext* context, const char* symbol);
+ssize_t send_data(ClientContext* context, const void* data, size_t size);
+ssize_t receive_data(ClientContext* context, void* buffer, size_t size);
 
 // Message receiving
 void* message_receiver_thread(void* arg);

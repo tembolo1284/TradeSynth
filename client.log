@@ -5,3 +5,10 @@
 2024-12-05 13:24:28 [INFO ] (src/client/client.c:139 - connect_to_server) Connected to server localhost:8080
 2024-12-05 13:24:35 [INFO ] (src/client/client.c:197 - request_market_data) Requested market data for symbol: GOOG
 2024-12-05 13:24:40 [INFO ] (src/client/main.c:135 - main) User requested to exit
+2024-12-05 19:13:11 [INFO ] (src/common/logger.c:56 - init_logger) Logger initialized with minimum level: DEBUG
+2024-12-05 19:13:11 [INFO ] (examples/message_examples/example_client.c:221 - main) Starting example client...
+2024-12-05 19:13:11 [INFO ] (src/client/client.c:95 - initialize_client) Client context initialized successfully
+2024-12-05 19:13:11 [INFO ] (examples/message_examples/example_client.c:12 - on_connect) Connected to server
+2024-12-05 19:13:11 [INFO ] (src/client/client.c:159 - connect_to_server) Connected to server localhost:8080
+2024-12-05 19:13:11 [INFO ] (examples/message_examples/example_client.c:251 - main) Connected to server, sending messages...
+2024-12-05 19:13:11 [ERROR] (examples/message_examples/example_client.c:45 - send_and_receive) Failed to send message

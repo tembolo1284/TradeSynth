@@ -8,12 +8,50 @@
 #include "../../include/common/types.h"
 #include "../../include/serialization/serialization.h"
 
-int main(int argc, char *argv[]) {
-    // Initialize logger
+void on_connect(void* user_data __attribute__((unused))) {
+    LOG_INFO("Connected to server");
+}
+
+void on_trade(const TradeExecution* trade, void* user_data __attribute__((unused))) {
+    LOG_INFO("Received trade execution:");
+    LOG_INFO("  Trade ID: %lu", trade->trade_id);
+    LOG_INFO("  Order ID: %lu", trade->order_id);
+    LOG_INFO("  Symbol: %s", trade->symbol);
+    LOG_INFO("  Price: %.2f", price_to_double(trade->price));
+    LOG_INFO("  Quantity: %u", trade->quantity);
+    LOG_INFO("  Buyer: %s", trade->buyer_id);
+    LOG_INFO("  Seller: %s", trade->seller_id);
+}
+
+int main(void) {
     init_logger("client.log", LOG_DEBUG);
     LOG_INFO("Starting trading example client...");
     
-    // Create a sample order
+    ClientConfig config = {
+        .server_port = 8080,
+        .socket_timeout = DEFAULT_SOCKET_TIMEOUT,
+        .reconnect_attempts = DEFAULT_RECONNECT_ATTEMPTS
+    };
+    strncpy(config.server_host, "localhost", sizeof(config.server_host));
+    strncpy(config.client_id, "CLIENT001", MAX_CLIENT_ID_LENGTH);
+
+    ClientCallbacks callbacks = {
+        .on_connect = on_connect,
+        .on_trade = on_trade
+    };
+
+    ClientContext* client = initialize_client(&config, &callbacks, NULL);
+    if (!client) {
+        LOG_ERROR("Failed to create client context");
+        return 1;
+    }
+
+    if (connect_to_server(client) != SUCCESS) {
+        LOG_ERROR("Failed to connect to server");
+        cleanup_client(client);
+        return 1;
+    }
+
     Order order = {
         .order_id = 12345,
         .type = ORDER_TYPE_LIMIT,
@@ -25,49 +63,16 @@ int main(int argc, char *argv[]) {
         .remaining_quantity = 100,
         .creation_time = time(NULL),
         .modification_time = time(NULL),
-        .expiration_time = time(NULL) + 86400  // Expires in 24 hours
+        .expiration_time = time(NULL) + 86400
     };
     
-    // Set symbol and client ID
     strncpy(order.symbol, "AAPL", MAX_SYMBOL_LENGTH);
     strncpy(order.client_id, "CLIENT001", MAX_CLIENT_ID_LENGTH);
-    
-    // Set price (e.g., $150.50)
     order.price = double_to_price(150.50);
 
-    // Create message container
-    Message msg = {
-        .type = MSG_ORDER_NEW,
-        .sequence_num = 1,
-        .timestamp = time(NULL),
-        .data.order = order
-    };
-
-    // Connect to server
-    ClientContext* client = create_client_context();
-    if (!client) {
-        LOG_ERROR("Failed to create client context");
-        return 1;
-    }
-    
-    if (connect_to_server(client, "localhost", 8080) != 0) {
-        LOG_ERROR("Failed to connect to server");
-        destroy_client_context(client);
-        return 1;
-    }
-
-    // Serialize and send the message
-    uint8_t buffer[BUFFER_SIZE];
-    ssize_t serialized_size = serialize_message(&msg, buffer, BUFFER_SIZE);
-    if (serialized_size < 0) {
-        LOG_ERROR("Failed to serialize message");
-        destroy_client_context(client);
-        return 1;
-    }
-
-    if (send_data(client, buffer, serialized_size) != serialized_size) {
+    if (send_order(client, &order) != SUCCESS) {
         LOG_ERROR("Failed to send order");
-        destroy_client_context(client);
+        cleanup_client(client);
         return 1;
     }
 
@@ -77,28 +82,10 @@ int main(int argc, char *argv[]) {
              order.quantity,
              order.side == ORDER_SIDE_BUY ? "BUY" : "SELL");
 
-    // Wait for trade execution response
-    uint8_t response_buffer[BUFFER_SIZE];
-    ssize_t received = receive_data(client, response_buffer, BUFFER_SIZE);
-    if (received > 0) {
-        Message response_msg;
-        if (deserialize_message(response_buffer, received, &response_msg) == SUCCESS) {
-            if (response_msg.type == MSG_TRADE_EXEC) {
-                TradeExecution* trade = &response_msg.data.trade;
-                LOG_INFO("Received trade execution:");
-                LOG_INFO("  Trade ID: %lu", trade->trade_id);
-                LOG_INFO("  Order ID: %lu", trade->order_id);
-                LOG_INFO("  Symbol: %s", trade->symbol);
-                LOG_INFO("  Price: %.2f", price_to_double(trade->price));
-                LOG_INFO("  Quantity: %u", trade->quantity);
-                LOG_INFO("  Buyer: %s", trade->buyer_id);
-                LOG_INFO("  Seller: %s", trade->seller_id);
-            }
-        }
-    }
+    // Sleep to allow time for response
+    sleep(1);
 
-    // Cleanup
-    destroy_client_context(client);
+    cleanup_client(client);
     LOG_INFO("Client shutdown complete");
     return 0;
 }
