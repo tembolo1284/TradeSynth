@@ -36,3 +36,489 @@
 2024-12-05 13:29:24 [INFO ] (src/server/server_core.c:136 - stop_server) Server stopped
 2024-12-05 13:29:24 [INFO ] (src/server/server_core.c:150 - cleanup_server) Server resources cleaned up
 2024-12-05 13:29:24 [INFO ] (src/common/logger.c:128 - close_logger) Closing logger
+2024-12-05 20:24:56 [INFO ] (src/common/logger.c:56 - init_logger) Logger initialized with minimum level: INFO
+2024-12-05 20:24:56 [INFO ] (src/server/main.c:65 - main) TradeSynth Server Starting...
+2024-12-05 20:24:56 [INFO ] (src/server/server_core.c:73 - start_server) Starting server on port 8080
+2024-12-05 20:24:56 [INFO ] (src/server/server_network.c:35 - setup_socket) Server socket setup successfully on port 8080
+2024-12-05 20:24:56 [INFO ] (src/server/server_core.c:94 - start_server) Server started successfully
+2024-12-05 20:24:58 [INFO ] (src/server/server_core.c:10 - signal_handler) Received signal 2, initiating shutdown
+2024-12-05 20:24:58 [ERROR] (src/server/server_core.c:104 - start_server) Failed to accept client connection: Interrupted system call
+2024-12-05 20:24:58 [INFO ] (src/server/server_core.c:116 - stop_server) Stopping server
+2024-12-05 20:24:58 [INFO ] (src/server/server_core.c:136 - stop_server) Server stopped
+2024-12-05 20:24:58 [INFO ] (src/server/server_core.c:116 - stop_server) Stopping server
+2024-12-05 20:24:58 [INFO ] (src/server/server_core.c:136 - stop_server) Server stopped
+2024-12-05 20:24:58 [INFO ] (src/server/server_core.c:150 - cleanup_server) Server resources cleaned up
+2024-12-05 20:24:58 [INFO ] (src/common/logger.c:128 - close_logger) Closing logger
+2024-12-05 20:25:09 [INFO ] (src/common/logger.c:56 - init_logger) Logger initialized with minimum level: DEBUG
+2024-12-05 20:25:09 [INFO ] (examples/trading_communication/example_server.c:83 - main) Starting trading example server...
+2024-12-05 20:25:09 [INFO ] (src/server/server_core.c:73 - start_server) Starting server on port 8080
+2024-12-05 20:25:09 [INFO ] (src/server/server_network.c:35 - setup_socket) Server socket setup successfully on port 8080
+2024-12-05 20:25:09 [INFO ] (src/server/server_core.c:94 - start_server) Server started successfully
+2024-12-05 20:25:09 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:09 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:09 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:09 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:09 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:09 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:09 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:09 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:09 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:09 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:10 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:10 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:10 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:10 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:10 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:10 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:10 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:10 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:10 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:10 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:10 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:10 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:10 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:10 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:10 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:10 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:10 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:10 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:10 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:10 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:10 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:10 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:10 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:10 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:10 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:10 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:10 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:10 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:10 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:10 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:10 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:10 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:10 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:10 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:10 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:10 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:10 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:10 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:10 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:10 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:10 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:10 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:10 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:10 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:10 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:10 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:10 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:10 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:11 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:11 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:11 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:11 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:11 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:11 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:11 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:11 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:11 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:11 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:11 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:11 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:11 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:11 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:11 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:11 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:11 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:11 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:11 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:11 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:11 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:11 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:11 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:11 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:11 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:11 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:11 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:11 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:11 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:11 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:11 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:11 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:11 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:11 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:11 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:11 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:11 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:11 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:11 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:11 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:11 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:11 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:11 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:11 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:11 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:11 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:11 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:11 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:11 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:12 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:12 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:12 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:12 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:12 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:12 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:12 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:12 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:12 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:12 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:12 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:12 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:12 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:12 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:12 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:12 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:12 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:12 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:12 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:12 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:12 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:12 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:12 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:12 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:12 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:12 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:12 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:12 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:12 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:12 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:12 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:12 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:12 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:12 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:12 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:12 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:12 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:12 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:12 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:12 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:12 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:12 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:12 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:12 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:12 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:12 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:12 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:12 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:12 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:14 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:14 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:14 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:14 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:14 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:14 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:14 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:14 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:14 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:14 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:14 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:14 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:14 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:14 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:14 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:14 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:14 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:14 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:14 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:14 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:14 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:14 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:14 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:14 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:14 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:14 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:14 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:14 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:14 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:14 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:14 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:14 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:14 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:14 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:14 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:14 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:14 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:14 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:14 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:14 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:14 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:14 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:25:14 [INFO ] (src/server/server_core.c:10 - signal_handler) Received signal 2, initiating shutdown
+2024-12-05 20:25:14 [INFO ] (src/server/server_core.c:116 - stop_server) Stopping server
+2024-12-05 20:25:14 [INFO ] (src/server/server_core.c:136 - stop_server) Server stopped
+2024-12-05 20:25:14 [INFO ] (examples/trading_communication/example_server.c:110 - main) Server listening on port 8080
+2024-12-05 20:25:14 [INFO ] (src/server/server_core.c:116 - stop_server) Stopping server
+2024-12-05 20:25:14 [INFO ] (src/server/server_core.c:136 - stop_server) Server stopped
+2024-12-05 20:25:14 [INFO ] (src/server/server_core.c:116 - stop_server) Stopping server
+2024-12-05 20:25:14 [INFO ] (src/server/server_core.c:136 - stop_server) Server stopped
+2024-12-05 20:25:14 [INFO ] (src/server/server_core.c:150 - cleanup_server) Server resources cleaned up
+2024-12-05 20:25:14 [INFO ] (examples/trading_communication/example_server.c:120 - main) Server shutdown complete
+2024-12-05 20:26:12 [INFO ] (src/common/logger.c:56 - init_logger) Logger initialized with minimum level: DEBUG
+2024-12-05 20:26:12 [INFO ] (examples/trading_communication/example_server.c:83 - main) Starting trading example server...
+2024-12-05 20:26:12 [INFO ] (src/server/server_core.c:73 - start_server) Starting server on port 8080
+2024-12-05 20:26:12 [INFO ] (src/server/server_network.c:35 - setup_socket) Server socket setup successfully on port 8080
+2024-12-05 20:26:12 [INFO ] (src/server/server_core.c:94 - start_server) Server started successfully
+2024-12-05 20:26:12 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:12 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:12 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:12 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:14 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:14 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:14 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:14 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:14 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:14 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:14 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:14 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:14 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:15 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:15 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:15 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:15 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:15 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:15 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:15 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:15 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:15 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:16 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:16 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:16 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:16 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:16 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:16 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:16 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:16 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:16 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:17 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:17 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:17 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:17 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:17 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:17 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:17 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:17 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:17 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:18 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:18 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:18 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:18 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:18 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:18 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:18 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:18 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:18 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:19 [INFO ] (src/server/server_core.c:10 - signal_handler) Received signal 2, initiating shutdown
+2024-12-05 20:26:19 [INFO ] (src/server/server_core.c:116 - stop_server) Stopping server
+2024-12-05 20:26:19 [INFO ] (src/server/server_core.c:136 - stop_server) Server stopped
+2024-12-05 20:26:19 [INFO ] (examples/trading_communication/example_server.c:110 - main) Server listening on port 8080
+2024-12-05 20:26:19 [INFO ] (src/server/server_core.c:116 - stop_server) Stopping server
+2024-12-05 20:26:19 [INFO ] (src/server/server_core.c:136 - stop_server) Server stopped
+2024-12-05 20:26:19 [INFO ] (src/server/server_core.c:116 - stop_server) Stopping server
+2024-12-05 20:26:19 [INFO ] (src/server/server_core.c:136 - stop_server) Server stopped
+2024-12-05 20:26:19 [INFO ] (src/server/server_core.c:150 - cleanup_server) Server resources cleaned up
+2024-12-05 20:26:19 [INFO ] (examples/trading_communication/example_server.c:120 - main) Server shutdown complete
+2024-12-05 20:26:46 [INFO ] (src/common/logger.c:56 - init_logger) Logger initialized with minimum level: DEBUG
+2024-12-05 20:26:46 [INFO ] (examples/trading_communication/example_server.c:83 - main) Starting trading example server...
+2024-12-05 20:26:46 [INFO ] (src/server/server_core.c:73 - start_server) Starting server on port 8080
+2024-12-05 20:26:46 [INFO ] (src/server/server_network.c:35 - setup_socket) Server socket setup successfully on port 8080
+2024-12-05 20:26:46 [INFO ] (src/server/server_core.c:94 - start_server) Server started successfully
+2024-12-05 20:26:46 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:47 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:48 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:49 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:50 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:26:50 [INFO ] (src/server/server_core.c:10 - signal_handler) Received signal 2, initiating shutdown
+2024-12-05 20:26:50 [INFO ] (src/server/server_core.c:116 - stop_server) Stopping server
+2024-12-05 20:26:50 [INFO ] (src/server/server_core.c:136 - stop_server) Server stopped
+2024-12-05 20:26:50 [INFO ] (examples/trading_communication/example_server.c:110 - main) Server listening on port 8080
+2024-12-05 20:26:50 [INFO ] (src/server/server_core.c:116 - stop_server) Stopping server
+2024-12-05 20:26:50 [INFO ] (src/server/server_core.c:136 - stop_server) Server stopped
+2024-12-05 20:26:50 [INFO ] (src/server/server_core.c:116 - stop_server) Stopping server
+2024-12-05 20:26:50 [INFO ] (src/server/server_core.c:136 - stop_server) Server stopped
+2024-12-05 20:26:50 [INFO ] (src/server/server_core.c:150 - cleanup_server) Server resources cleaned up
+2024-12-05 20:26:50 [INFO ] (examples/trading_communication/example_server.c:120 - main) Server shutdown complete
+2024-12-05 20:27:02 [INFO ] (src/common/logger.c:56 - init_logger) Logger initialized with minimum level: DEBUG
+2024-12-05 20:27:02 [INFO ] (examples/trading_communication/example_server.c:83 - main) Starting trading example server...
+2024-12-05 20:27:02 [INFO ] (src/server/server_core.c:73 - start_server) Starting server on port 8080
+2024-12-05 20:27:02 [INFO ] (src/server/server_network.c:35 - setup_socket) Server socket setup successfully on port 8080
+2024-12-05 20:27:02 [INFO ] (src/server/server_core.c:94 - start_server) Server started successfully
+2024-12-05 20:27:02 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:03 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:04 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:05 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:06 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:07 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:08 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:09 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:10 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:11 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:12 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:13 [INFO ] (src/server/server_network.c:60 - accept_client) Accepted new client connection from 127.0.0.1:38452
+2024-12-05 20:27:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:14 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:15 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:16 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:17 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:18 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:19 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:20 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:21 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:22 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:23 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:24 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:25 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:26 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:27 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:28 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:29 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:30 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:31 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:32 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:33 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:34 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:35 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:36 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:37 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:38 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:39 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:40 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:41 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:41 [INFO ] (src/server/server_network.c:60 - accept_client) Accepted new client connection from 127.0.0.1:37114
+2024-12-05 20:27:41 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:42 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:43 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:44 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:45 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:46 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:47 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:48 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:49 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:50 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:51 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:52 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:53 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:54 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:55 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:56 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:57 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:58 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:27:59 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:28:00 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:28:01 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:28:02 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:28:03 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:28:04 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:28:04 [INFO ] (src/server/server_network.c:60 - accept_client) Accepted new client connection from 127.0.0.1:42230
+2024-12-05 20:28:04 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:28:05 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:28:06 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:28:07 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:28:08 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:28:09 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:28:10 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:28:11 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:28:12 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:28:13 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:28:14 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:28:15 [INFO ] (src/server/server_core.c:10 - signal_handler) Received signal 2, initiating shutdown
+2024-12-05 20:28:15 [INFO ] (src/server/server_core.c:116 - stop_server) Stopping server
+2024-12-05 20:28:15 [INFO ] (src/server/server_core.c:136 - stop_server) Server stopped
+2024-12-05 20:28:15 [INFO ] (examples/trading_communication/example_server.c:110 - main) Server listening on port 8080
+2024-12-05 20:28:15 [INFO ] (src/server/server_core.c:116 - stop_server) Stopping server
+2024-12-05 20:28:15 [INFO ] (src/server/server_core.c:136 - stop_server) Server stopped
+2024-12-05 20:28:15 [INFO ] (src/server/server_core.c:116 - stop_server) Stopping server
+2024-12-05 20:28:15 [INFO ] (src/server/server_core.c:136 - stop_server) Server stopped
+2024-12-05 20:28:15 [INFO ] (src/server/server_core.c:150 - cleanup_server) Server resources cleaned up
+2024-12-05 20:28:15 [INFO ] (examples/trading_communication/example_server.c:120 - main) Server shutdown complete
+2024-12-05 20:28:42 [INFO ] (src/common/logger.c:56 - init_logger) Logger initialized with minimum level: DEBUG
+2024-12-05 20:28:42 [INFO ] (examples/trading_communication/example_server.c:83 - main) Starting trading example server...
+2024-12-05 20:28:42 [INFO ] (src/server/server_core.c:73 - start_server) Starting server on port 8080
+2024-12-05 20:28:42 [INFO ] (src/server/server_network.c:35 - setup_socket) Server socket setup successfully on port 8080
+2024-12-05 20:28:42 [INFO ] (src/server/server_core.c:94 - start_server) Server started successfully
+2024-12-05 20:28:42 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:28:51 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:29:00 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:29:00 [INFO ] (src/server/server_network.c:60 - accept_client) Accepted new client connection from 127.0.0.1:33308
+2024-12-05 20:29:00 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:29:09 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:29:18 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:29:27 [DEBUG] (src/server/server_core.c:98 - start_server) Server running: 1
+2024-12-05 20:29:31 [INFO ] (src/server/server_core.c:10 - signal_handler) Received signal 2, initiating shutdown
+2024-12-05 20:29:31 [INFO ] (src/server/server_core.c:116 - stop_server) Stopping server
+2024-12-05 20:29:31 [INFO ] (src/server/server_core.c:136 - stop_server) Server stopped
+2024-12-05 20:29:31 [INFO ] (examples/trading_communication/example_server.c:110 - main) Server listening on port 8080
+2024-12-05 20:29:31 [INFO ] (src/server/server_core.c:116 - stop_server) Stopping server
+2024-12-05 20:29:31 [INFO ] (src/server/server_core.c:136 - stop_server) Server stopped
+2024-12-05 20:29:31 [INFO ] (src/server/server_core.c:116 - stop_server) Stopping server
+2024-12-05 20:29:31 [INFO ] (src/server/server_core.c:136 - stop_server) Server stopped
+2024-12-05 20:29:31 [INFO ] (src/server/server_core.c:150 - cleanup_server) Server resources cleaned up
+2024-12-05 20:29:31 [INFO ] (examples/trading_communication/example_server.c:120 - main) Server shutdown complete

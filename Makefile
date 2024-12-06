@@ -3,6 +3,7 @@ CFLAGS = -Wall -Wextra -I./include -pthread
 LDFLAGS = -pthread -lm
 DEBUG_FLAGS = -g -DDEBUG 
 RELEASE_FLAGS = -O2 -DNDEBUG
+TEST_LDFLAGS = -lcriterion
 
 # Directories
 SRC_DIR = src
@@ -70,7 +71,7 @@ $(CLIENT_BIN): $(CLIENT_OBJS) $(COMMON_OBJS) $(SERIAL_OBJS)
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
 $(TEST_BIN): $(TEST_OBJS) $(COMMON_OBJS) $(SERIAL_OBJS)
-	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS) -lcunit
+	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(TEST_LDFLAGS)
 
 examples: $(EXAMPLE_BINS)
 

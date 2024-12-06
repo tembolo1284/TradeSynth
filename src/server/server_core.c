@@ -99,7 +99,7 @@ int start_server(ServerContext* context) {
         int result = accept_client(context);
         if (result < 0) {
             if (errno == EAGAIN || errno == EWOULDBLOCK) {
-                usleep(10000); // Sleep briefly to avoid busy looping
+                usleep(9000000); // Sleep briefly to avoid busy looping
             } else {
                 LOG_ERROR("Failed to accept client connection: %s", strerror(errno));
             }
